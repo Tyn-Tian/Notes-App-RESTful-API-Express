@@ -18,6 +18,19 @@ model User {
   name     String  @db.VarChar(100)
   password String  @db.VarChar(100)
   token    String?
+  notes    Note[]
 
   @@map("users")
+}
+
+model Note {
+  id        String  @id @db.VarChar(100)
+  title     String  @db.VarChar(100)
+  body      String  @db.Text
+  archived  Boolean
+  createdAt String  @db.VarChar(100)
+  username  String  @db.VarChar(100)
+  user      User    @relation(fields: [username], references: [username])
+
+  @@map("notes")
 }
