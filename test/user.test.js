@@ -19,6 +19,8 @@ describe("POST /api/users", () => {
     });
 
     expect(result.status).toBe(201);
+    expect(result.body.status).toBeDefined();
+    expect(result.body.message).toBeDefined();
     expect(result.body.data.username).toBe("Tyn");
     expect(result.body.data.name).toBe("Christian");
     expect(result.body.data.password).toBeUndefined();
