@@ -1,0 +1,487 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Notes API",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/api/notes": {
+      "post": {
+        "description": "Create notes",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "Belajar PHP": {
+                  "description": "Create note 'Belajar PHP'",
+                  "value": {
+                    "title": "Belajar PHP",
+                    "body": "My note about learning PHP."
+                  }
+                }
+              },
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "body": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success create notes",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Belajar PHP": {
+                    "description": "Create notes 'Belajar PHP'",
+                    "value": {
+                      "status": "success",
+                      "message": "Note created",
+                      "data": {
+                        "id": "notes-_O6A6TJcCYUWO7t4",
+                        "title": "Belajar PHP",
+                        "body": "My note about learning PHP.",
+                        "archived": false,
+                        "createdAt": "2022-07-28T10:12:12.396Z"
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "body": {
+                          "type": "string"
+                        },
+                        "archived": {
+                          "type": "boolean"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Get notes (non-archived)",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get notes (non-archived)",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Get Notes": {
+                    "description": "Success get notes (non-archived)",
+                    "value": {
+                      "status": "success",
+                      "message": "Note retrieved",
+                      "data": [
+                        {
+                          "id": "notes-jT-jjsyz61J8XKiI",
+                          "title": "Belajar PHP",
+                          "body": "My notes about learning PHP.",
+                          "archived": false,
+                          "createdAt": "2022-07-28T10:03:12.594Z"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "body": {
+                            "type": "string"
+                          },
+                          "archived": {
+                            "type": "boolean"
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/notes/archived": {
+      "get": {
+        "description": "Get archived notes",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get archived notes",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Get Notes": {
+                    "description": "Success get archived notes",
+                    "value": {
+                      "status": "success",
+                      "message": "Note retrieved",
+                      "data": [
+                        {
+                          "id": "notes-jT-jjsyz61J8XKiI",
+                          "title": "Belajar PHP",
+                          "body": "My notes about learning PHP.",
+                          "archived": true,
+                          "createdAt": "2022-07-28T10:03:12.594Z"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "body": {
+                            "type": "string"
+                          },
+                          "archived": {
+                            "type": "boolean"
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/notes/{note_id}": {
+      "get": {
+        "description": "Get single note",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "note_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get single note",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Belajar PHP": {
+                    "description": "Success get single note 'Belajar PHP'",
+                    "value": {
+                      "status": "success",
+                      "message": "Note retrieved",
+                      "data": {
+                        "id": "notes-jT-jjsyz61J8XKiI",
+                        "title": "Belajar PHP",
+                        "body": "My notes about learning PHP.",
+                        "archived": false,
+                        "createdAt": "2022-07-28T10:03:12.594Z"
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "body": {
+                          "type": "string"
+                        },
+                        "archived": {
+                          "type": "boolean"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete note",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "note_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success delete note",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Delete Note": {
+                    "description": "Delete Note",
+                    "value": {
+                      "status": "success",
+                      "message": "Note deleted"
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/notes/{note_id}/archive": {
+      "post": {
+        "description": "Archive note",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "note_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success archive note",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Archive Note": {
+                    "description": "Success archive note",
+                    "value": {
+                      "status": "success",
+                      "message": "Note archived"
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/notes/{note_id}/unarchive": {
+      "post": {
+        "description": "Unarchive note",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "note_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success unarchive note",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Unarchive Note": {
+                    "description": "Success unarchive note",
+                    "value": {
+                      "status": "success",
+                      "message": "Note unarchived"
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
