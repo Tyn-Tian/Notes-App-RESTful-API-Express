@@ -7,7 +7,7 @@ const createUserTest = async () => {
       username: "Tyn",
       password: await bcrypt.hash("rahasia", 10),
       name: "Christian",
-      token: "token"
+      token: "token",
     },
   });
 };
@@ -20,4 +20,12 @@ const deleteUserTest = async () => {
   });
 };
 
-export { createUserTest, deleteUserTest };
+const getUserTest = async () => {
+  return prismaClient.user.findUnique({
+    where: {
+      username: "Tyn",
+    },
+  });
+};
+
+export { createUserTest, deleteUserTest, getUserTest };
