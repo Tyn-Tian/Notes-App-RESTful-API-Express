@@ -319,6 +319,14 @@
             "description": "Success Logout user",
             "content": {
               "application/json": {
+                "examples": {
+                  "Success Logout User": {
+                    "value": {
+                      "status": "success",
+                      "message": "Logout user success"
+                    }
+                  }
+                },
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -327,17 +335,6 @@
                     },
                     "message": {
                       "type": "string"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "username": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        }
-                      }
                     }
                   }
                 }
