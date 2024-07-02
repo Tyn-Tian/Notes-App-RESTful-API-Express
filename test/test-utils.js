@@ -7,6 +7,7 @@ const createUserTest = async () => {
       username: "Tyn",
       password: await bcrypt.hash("rahasia", 10),
       name: "Christian",
+      token: "token"
     },
   });
 };
