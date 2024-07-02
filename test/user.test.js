@@ -1,14 +1,10 @@
 import supertest from "supertest";
 import { web } from "../src/application/web";
-import { prismaClient } from "../src/application/database";
+import { createUserTest, deleteUserTest } from "./test-utils";
 
 describe("POST /api/users", () => {
   afterEach(async () => {
-    await prismaClient.user.deleteMany({
-      where: {
-        username: "Tyn",
-      },
-    });
+    await deleteUserTest();
   });
 
   it("should can register new user", async () => {
@@ -38,13 +34,7 @@ describe("POST /api/users", () => {
   });
 
   it("should reject if username is already registered", async () => {
-    await prismaClient.user.create({
-      data: {
-        username: "Tyn",
-        name: "Christian",
-        password: "rahasia",
-      },
-    });
+    await createUserTest();
 
     const result = await supertest(web).post("/api/users").send({
       username: "Tyn",
@@ -54,5 +44,58 @@ describe("POST /api/users", () => {
 
     expect(result.status).toBe(400);
     expect(result.body.errors).toBeDefined();
+  });
+});
+
+describe("POST /api/users/login", () => {
+  beforeEach(async () => {
+    await createUserTest();
+  });
+
+  afterEach(async () => {
+    await deleteUserTest();
+  });
+
+  it("should can login user", async () => {
+    const result = await supertest(web).post("/api/users/login").send({
+      username: "Tyn",
+      password: "rahasia",
+    });
+
+    expect(result.status).toBe(200);
+    expect(result.body.status).toBeDefined();
+    expect(result.body.message).toBeDefined();
+    expect(result.body.data.token).toBeDefined();
+  });
+
+  it("should reject if request is invalid", async () => {
+    const result = await supertest(web).post("/api/users/login").send({
+      username: "",
+      password: "",
+    });
+
+    expect(result.status).toBe(400);
+    expect(result.body.errors).toBeDefined();
+  });
+
+  it('should reject if username is not registered', async () => {
+    await deleteUserTest();
+    const result = await supertest(web).post("/api/users/login").send({
+      username: "Tyn",
+      password: "rahasia",
+    });
+
+    expect(result.status).toBe(401);
+    expect(result.body.errors).toBe("Username or password wrong");
+  });
+
+  it('should reject if password is wrong', async () => {
+    const result = await supertest(web).post("/api/users/login").send({
+      username: "Tyn",
+      password: "wrong",
+    });
+
+    expect(result.status).toBe(401);
+    expect(result.body.errors).toBe("Username or password wrong");
   });
 });
