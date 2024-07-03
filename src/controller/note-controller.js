@@ -58,9 +58,24 @@ const getSingle = async (req, res, next) => {
   }
 };
 
+const remove = async (req, res, next) => {
+  try {
+    const username = req.user.username;
+    const noteId = req.params.note_id;
+    await noteService.remove(username, noteId);
+    res.status(200).json({
+      status: "success",
+      message: "Note deleted",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
 export default {
   create,
   getUnarchived,
   getArchived,
-  getSingle
+  getSingle,
+  remove
 };

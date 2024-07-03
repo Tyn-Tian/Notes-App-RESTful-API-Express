@@ -66,8 +66,31 @@ const getSingleNote = async (username, noteId) => {
   return note;
 };
 
+const remove = async (username, noteId) => {
+  noteId = validate(noteIdValidation, noteId);
+
+  const note = await prismaClient.note.findUnique({
+    where: {
+      username: username,
+      id: noteId,
+    },
+  });
+
+  if (!note) {
+    throw new ResponseError(404, "Note is not found");
+  }
+
+  await prismaClient.note.delete({
+    where: {
+      username: username,
+      id: noteId,
+    },
+  });
+};
+
 export default {
   create,
   get,
   getSingleNote,
+  remove
 };
