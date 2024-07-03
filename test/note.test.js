@@ -1,6 +1,11 @@
 import supertest from "supertest";
 import { web } from "../src/application/web.js";
-import { createUserTest, deleteNoteTest, deleteUserTest } from "./test-utils";
+import {
+  createMultipleNotes,
+  createUserTest,
+  deleteNoteTest,
+  deleteUserTest,
+} from "./test-utils";
 
 describe("POST /api/notes", () => {
   beforeEach(async () => {
@@ -61,6 +66,59 @@ describe("POST /api/notes", () => {
         title: "test",
         body: "Body for notes test",
       })
+      .set("Authorization", "wrong");
+
+    expect(result.status).toBe(401);
+    expect(result.body.errors).toBeDefined();
+  });
+});
+
+describe("GET /api/notes", () => {
+  beforeEach(async () => {
+    await createUserTest();
+  });
+
+  afterEach(async () => {
+    await deleteNoteTest();
+    await deleteUserTest();
+  });
+
+  it("should can get all unarchived notes", async () => {
+    await createMultipleNotes(false);
+    const result = await supertest(web)
+      .get("/api/notes")
+      .set("Authorization", "token");
+
+    expect(result.status).toBe(200);
+    expect(result.body.status).toBeDefined();
+    expect(result.body.message).toBeDefined();
+    expect(result.body.data[0].id).toBe("1");
+    expect(result.body.data[0].title).toBeDefined();
+    expect(result.body.data[0].body).toBeDefined();
+    expect(result.body.data[0].archived).toBeFalsy();
+    expect(result.body.data[0].createdAt).toBeDefined();
+    expect(result.body.data[0].username).toBeUndefined();
+  });
+
+  it("should can get empty unarchived notes", async () => {
+    const result = await supertest(web)
+      .get("/api/notes")
+      .set("Authorization", "token");
+
+    expect(result.status).toBe(200);
+    expect(result.body.data.length).toBe(0);
+  });
+
+  it("should reject if not set token", async () => {
+    const result = await supertest(web).get("/api/notes");
+
+    expect(result.status).toBe(401);
+    expect(result.body.errors).toBeDefined();
+  });
+
+  it("should reject if token is invalid", async () => {
+    const result = await supertest(web)
+      .get("/api/notes")
       .set("Authorization", "wrong");
 
     expect(result.status).toBe(401);

@@ -38,4 +38,33 @@ const deleteNoteTest = async () => {
   });
 };
 
-export { createUserTest, deleteUserTest, getUserTest, deleteNoteTest };
+const createMultipleNotes = async (isArchived) => {
+  await prismaClient.note.createMany({
+    data: [
+      {
+        id: "1",
+        title: "test",
+        body: "ini adalah test body",
+        archived: isArchived,
+        createdAt: new Date().toISOString(),
+        username: "Tyn",
+      },
+      {
+        id: "2",
+        title: "test",
+        body: "ini adalah test body",
+        archived: isArchived,
+        createdAt: new Date().toISOString(),
+        username: "Tyn",
+      },
+    ],
+  });
+};
+
+export {
+  createUserTest,
+  deleteUserTest,
+  getUserTest,
+  deleteNoteTest,
+  createMultipleNotes,
+};
