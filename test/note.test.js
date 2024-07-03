@@ -331,3 +331,53 @@ describe("POST /api/notes/:note_id/archive", () => {
     expect(result.body.errors).toBeDefined();
   });
 });
+
+describe("POST /api/notes/:note_id/unarchive", () => {
+  beforeEach(async () => {
+    await createUserTest();
+  });
+
+  afterEach(async () => {
+    await deleteNoteTest();
+    await deleteUserTest();
+  });
+
+  it("should can unarchive note", async () => {
+    await createNoteTest(true);
+    const result = await supertest(web)
+      .post("/api/notes/1/unarchive")
+      .set("Authorization", "token");
+
+    const note = await getNoteTest();
+
+    expect(result.status).toBe(200);
+    expect(result.body.status).toBeDefined();
+    expect(result.body.message).toBeDefined();
+    expect(note.archived).toBeFalsy();
+  });
+
+  it("should reject if note is not found", async () => {
+    const result = await supertest(web)
+      .post("/api/notes/1/unarchive")
+      .set("Authorization", "token");
+
+    expect(result.status).toBe(404);
+    expect(result.body.errors).toBeDefined();
+  });
+
+  it("should reject if not set token", async () => {
+    const result = await supertest(web).post("/api/notes/1/unarchive");
+
+    expect(result.status).toBe(401);
+    expect(result.body.errors).toBeDefined();
+  });
+
+  it("should reject if token is invalid", async () => {
+    const result = await supertest(web)
+      .post("/api/notes/1/unarchive")
+      .set("Authorization", "wrong");
+
+    expect(result.status).toBe(401);
+    expect(result.body.errors).toBeDefined();
+  });
+});

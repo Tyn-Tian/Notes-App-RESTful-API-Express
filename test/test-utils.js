@@ -38,13 +38,13 @@ const deleteNoteTest = async () => {
   });
 };
 
-const createNoteTest = async () => {
+const createNoteTest = async (isArchived = false) => {
   await prismaClient.note.create({
     data: {
       id: "1",
       title: "test",
       body: "ini adalah test body",
-      archived: false,
+      archived: isArchived,
       createdAt: new Date().toISOString(),
       username: "Tyn",
     },
