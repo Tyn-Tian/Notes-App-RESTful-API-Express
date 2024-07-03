@@ -295,7 +295,7 @@ describe("POST /api/notes/:note_id/archive", () => {
   it("should can archive note", async () => {
     await createNoteTest();
     const result = await supertest(web)
-      .post("/api/notes/1/arhive")
+      .post("/api/notes/1/archive")
       .set("Authorization", "token");
 
     const note = await getNoteTest();
@@ -308,7 +308,7 @@ describe("POST /api/notes/:note_id/archive", () => {
 
   it("should reject if note is not found", async () => {
     const result = await supertest(web)
-      .post("/api/notes/1/arhive")
+      .post("/api/notes/1/archive")
       .set("Authorization", "token");
 
     expect(result.status).toBe(404);
@@ -324,7 +324,7 @@ describe("POST /api/notes/:note_id/archive", () => {
 
   it("should reject if token is invalid", async () => {
     const result = await supertest(web)
-      .post("/api/notes/1/arhive")
+      .post("/api/notes/1/archive")
       .set("Authorization", "wrong");
 
     expect(result.status).toBe(401);
