@@ -1,7 +1,8 @@
 import supertest from "supertest";
 import { web } from "../src/application/web.js";
 import {
-  createMultipleNotes,
+  createMultipleNotesTest,
+  createNoteTest,
   createUserTest,
   deleteNoteTest,
   deleteUserTest,
@@ -84,7 +85,7 @@ describe("GET /api/notes", () => {
   });
 
   it("should can get all unarchived notes", async () => {
-    await createMultipleNotes(false);
+    await createMultipleNotesTest(false);
     const result = await supertest(web)
       .get("/api/notes")
       .set("Authorization", "token");
@@ -137,7 +138,7 @@ describe("GET /api/notes/archived", () => {
   });
 
   it("should can get all archived notes", async () => {
-    await createMultipleNotes(true);
+    await createMultipleNotesTest(true);
     const result = await supertest(web)
       .get("/api/notes/archived")
       .set("Authorization", "token");
@@ -172,6 +173,57 @@ describe("GET /api/notes/archived", () => {
   it("should reject if token is invalid", async () => {
     const result = await supertest(web)
       .get("/api/notes/archived")
+      .set("Authorization", "wrong");
+
+    expect(result.status).toBe(401);
+    expect(result.body.errors).toBeDefined();
+  });
+});
+
+describe("GET /api/notes/:note_id", () => {
+  beforeEach(async () => {
+    await createUserTest();
+  });
+
+  afterEach(async () => {
+    await deleteNoteTest();
+    await deleteUserTest();
+  });
+
+  it("should can get a single note", async () => {
+    await createNoteTest();
+    const result = await supertest(web)
+      .get("/api/notes/1")
+      .set("Authorization", "token");
+
+    expect(result.status).toBe(200);
+    expect(result.body.status).toBeDefined();
+    expect(result.body.message).toBeDefined();
+    expect(result.body.data).toBeDefined();
+    expect(result.body.data.username).toBeUndefined();
+  });
+
+  it("should reject if not is not found", async () => {
+    const result = await supertest(web)
+      .get("/api/notes/1")
+      .set("Authorization", "token");
+
+    expect(result.status).toBe(404);
+    expect(result.body.errors).toBeDefined();
+  });
+
+  it("should reject if not set token", async () => {
+    await createNoteTest();
+    const result = await supertest(web).get("/api/notes/1");
+
+    expect(result.status).toBe(401);
+    expect(result.body.errors).toBeDefined();
+  });
+
+  it("should reject if token is invalid", async () => {
+    await createNoteTest();
+    const result = await supertest(web)
+      .get("/api/notes/1")
       .set("Authorization", "wrong");
 
     expect(result.status).toBe(401);
