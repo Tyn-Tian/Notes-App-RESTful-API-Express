@@ -43,8 +43,24 @@ const getArchived = async (req, res, next) => {
   }
 };
 
+const getSingle = async (req, res, next) => {
+  try {
+    const username = req.user.username;
+    const noteId = req.params.note_id;
+    const result = await noteService.getSingleNote(username, noteId);
+    res.status(200).json({
+      status: "success",
+      message: "Note retrieved",
+      data: result,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
 export default {
   create,
   getUnarchived,
   getArchived,
+  getSingle
 };

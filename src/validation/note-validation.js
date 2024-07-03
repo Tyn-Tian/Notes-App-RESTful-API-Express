@@ -5,4 +5,6 @@ const createNotesValidation = Joi.object({
   body: Joi.string().min(10).required(),
 });
 
-export { createNotesValidation };
+const noteIdValidation = Joi.string().required();
+
+export { createNotesValidation, noteIdValidation };
