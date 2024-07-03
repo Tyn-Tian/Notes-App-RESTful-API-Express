@@ -23,10 +23,10 @@ const create = async (request, username) => {
   });
 };
 
-const getUnarchived = async (username) => {
+const get = async (isArchived, username) => {
   return prismaClient.note.findMany({
     where: {
-      archived: false,
+      archived: isArchived,
       username: username,
     },
     select: {
@@ -41,5 +41,5 @@ const getUnarchived = async (username) => {
 
 export default {
   create,
-  getUnarchived,
+  get,
 };
