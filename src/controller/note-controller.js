@@ -72,10 +72,25 @@ const remove = async (req, res, next) => {
   }
 };
 
+const archive = async (req, res, next) => {
+  try {
+    const username = req.user.username;
+    const noteId = req.params.note_id;
+    await noteService.archive(username, noteId);
+    res.status(200).json({
+      status: "success",
+      message: "Note archived",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
 export default {
   create,
   getUnarchived,
   getArchived,
   getSingle,
-  remove
+  remove,
+  archive
 };
