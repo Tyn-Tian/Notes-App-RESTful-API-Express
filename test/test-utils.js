@@ -74,6 +74,15 @@ const createMultipleNotesTest = async (isArchived) => {
   });
 };
 
+const getNoteTest = async () => {
+  return prismaClient.note.findUnique({
+    where: {
+      username: "Tyn",
+      id: "1",
+    },
+  });
+};
+
 export {
   createUserTest,
   deleteUserTest,
@@ -81,4 +90,5 @@ export {
   deleteNoteTest,
   createNoteTest,
   createMultipleNotesTest,
+  getNoteTest,
 };
