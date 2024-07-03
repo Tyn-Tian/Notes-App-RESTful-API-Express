@@ -1,9 +1,9 @@
-import { prismaClient } from "../application/database";
-import { ResponseError } from "../error/response-error";
+import { prismaClient } from "../application/database.js";
+import { ResponseError } from "../error/response-error.js";
 import {
   createNotesValidation,
   noteIdValidation,
-} from "../validation/note-validation";
+} from "../validation/note-validation.js";
 import { validate } from "../validation/validate.js";
 import { v4 as uuid } from "uuid";
 
