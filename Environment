@@ -1,0 +1,26 @@
+{
+	"id": "eea5c4f1-beaa-420d-9831-a6fda4b4da4b",
+	"name": "Notes API Test",
+	"values": [
+		{
+			"key": "port",
+			"value": "3000",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "b6159dff-e0d1-4274-a2c2-38e880b5d035",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "noteId",
+			"value": "notes-0947079a-fad6-4304-aa89-0634aa14b7a7",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2024-07-03T06:06:39.991Z",
+	"_postman_exported_using": "Postman/11.1.14"
+}
