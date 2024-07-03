@@ -125,3 +125,56 @@ describe("GET /api/notes", () => {
     expect(result.body.errors).toBeDefined();
   });
 });
+
+describe("GET /api/notes/archived", () => {
+  beforeEach(async () => {
+    await createUserTest();
+  });
+
+  afterEach(async () => {
+    await deleteNoteTest();
+    await deleteUserTest();
+  });
+
+  it("should can get all archived notes", async () => {
+    await createMultipleNotes(true);
+    const result = await supertest(web)
+      .get("/api/notes/archived")
+      .set("Authorization", "token");
+
+    expect(result.status).toBe(200);
+    expect(result.body.status).toBeDefined();
+    expect(result.body.message).toBeDefined();
+    expect(result.body.data[0].id).toBe("1");
+    expect(result.body.data[0].title).toBeDefined();
+    expect(result.body.data[0].body).toBeDefined();
+    expect(result.body.data[0].archived).toBeTruthy();
+    expect(result.body.data[0].createdAt).toBeDefined();
+    expect(result.body.data[0].username).toBeUndefined();
+  });
+
+  it("should can get empty archived notes", async () => {
+    const result = await supertest(web)
+      .get("/api/notes/archived")
+      .set("Authorization", "token");
+
+    expect(result.status).toBe(200);
+    expect(result.body.data.length).toBe(0);
+  });
+
+  it("should reject if not set token", async () => {
+    const result = await supertest(web).get("/api/notes/archived");
+
+    expect(result.status).toBe(401);
+    expect(result.body.errors).toBeDefined();
+  });
+
+  it("should reject if token is invalid", async () => {
+    const result = await supertest(web)
+      .get("/api/notes/archived")
+      .set("Authorization", "wrong");
+
+    expect(result.status).toBe(401);
+    expect(result.body.errors).toBeDefined();
+  });
+});
