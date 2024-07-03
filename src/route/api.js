@@ -13,5 +13,6 @@ userRouter.delete("/api/users/logout", userController.logout);
 
 // Note API
 userRouter.post("/api/notes", noteController.create);
+userRouter.get("/api/notes", noteController.getUnarchived);
 
 export { userRouter };

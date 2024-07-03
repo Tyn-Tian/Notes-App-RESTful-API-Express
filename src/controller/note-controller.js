@@ -15,6 +15,21 @@ const create = async (req, res, next) => {
   }
 };
 
+const getUnarchived = async (req, res, next) => {
+  try {
+    const username = req.user.username;
+    const result = await noteService.getUnarchived(username);
+    res.status(200).json({
+      status: "success",
+      message: "Note retrieved",
+      data: result,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
 export default {
   create,
+  getUnarchived
 };

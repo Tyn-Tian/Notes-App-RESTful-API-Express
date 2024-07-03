@@ -23,6 +23,23 @@ const create = async (request, username) => {
   });
 };
 
+const getUnarchived = async (username) => {
+  return prismaClient.note.findMany({
+    where: {
+      archived: false,
+      username: username,
+    },
+    select: {
+      id: true,
+      title: true,
+      body: true,
+      archived: true,
+      createdAt: true,
+    },
+  });
+};
+
 export default {
   create,
+  getUnarchived,
 };
