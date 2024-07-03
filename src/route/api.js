@@ -18,5 +18,6 @@ userRouter.get("/api/notes/archived", noteController.getArchived);
 userRouter.get("/api/notes/:note_id", noteController.getSingle);
 userRouter.delete("/api/notes/:note_id", noteController.remove);
 userRouter.post("/api/notes/:note_id/arhive", noteController.archive);
+userRouter.post("/api/notes/:note_id/unarchive", noteController.unarchive);
 
 export { userRouter };

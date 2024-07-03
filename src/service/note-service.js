@@ -113,10 +113,36 @@ const archive = async (username, noteId) => {
   });
 };
 
+const unarchive = async (username, noteId) => {
+  noteId = validate(noteIdValidation, noteId);
+
+  const note = await prismaClient.note.findUnique({
+    where: {
+      username: username,
+      id: noteId,
+    },
+  });
+
+  if (!note) {
+    throw new ResponseError(404, "Note is not found");
+  }
+
+  await prismaClient.note.update({
+    where: {
+      username: note.username,
+      id: note.id,
+    },
+    data: {
+      archived: false
+    }
+  });
+};
+
 export default {
   create,
   get,
   getSingleNote,
   remove,
-  archive
+  archive,
+  unarchive,
 };
